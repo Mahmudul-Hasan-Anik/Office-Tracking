@@ -25,4 +25,41 @@ PostRouter.get('/post', (req,res)=>{
     })
 })
 
+PostRouter.get('/post/:id', (req,res)=>{
+    Post.findById({_id: req.params.id}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json(err)
+        }
+    })
+})
+
+PostRouter.post('/post/delete', (req,res)=>{
+    Post.findByIdAndDelete({_id: req.body.id}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json(err)
+        }
+    })
+})
+
+PostRouter.put('/post/edit', (req,res)=>{
+
+    const update = {
+        name: req.body.name,
+        hour: req.body.hour,
+        activity: req.body.activity
+    }
+
+    Post.findByIdAndUpdate(req.body.id, update, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json(err)
+        } 
+    })
+})
+
 module.exports = PostRouter
