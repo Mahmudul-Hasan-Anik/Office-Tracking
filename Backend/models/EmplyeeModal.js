@@ -19,7 +19,7 @@ const EmplyeeSchema = new Schema({
         type: String,
         required: true
     },
-    users:{
+    user:{
         type: Schema.Types.ObjectId,
         ref: 'Auth'
     }

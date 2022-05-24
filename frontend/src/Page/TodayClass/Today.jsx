@@ -1,19 +1,23 @@
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useContext } from 'react'
 import {Row,Col,Form,Button,Table,Container,Modal} from 'react-bootstrap'
 import Sidebar from '../../Components/Sidebar'
 import axios from 'axios'
+import { Store } from '../../Store'
 
 const Today = () => {
+ 
+  const {state} = useContext(Store)
+  const {userInformation} = state
 
   const [batch,setBatch] = useState('')
   const [time, setTime] = useState('')
   const [room,setRoom] = useState('')
   const [todayID,setTodayID] = useState('')
+  const [items, setItems] = useState([])
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
-  const [items, setItems] = useState([])
 
   const handleSubmit = (e)=>{
     e.preventDefault()
@@ -22,6 +26,7 @@ const Today = () => {
       batch,
       time,
       room,
+      user: userInformation
     })
     .then(()=>{
       setBatch('')
@@ -32,11 +37,11 @@ const Today = () => {
 
   useEffect(()=>{
     async function fatchData(){
-      const {data} = await axios.get('/api/today')
+      const {data} = await axios.get(`/api/today/user/${userInformation._id}`)
       setItems(data)
     }
     fatchData()
-  })
+  },[])
 
   const handleDelete = (id)=>{
     axios.post('/api/today/delete',{

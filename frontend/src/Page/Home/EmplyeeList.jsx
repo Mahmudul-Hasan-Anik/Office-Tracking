@@ -2,6 +2,7 @@ import { useState,useEffect,useContext } from 'react'
 import {Row,Col,Form,Button,Table,Container,Modal} from 'react-bootstrap'
 import Sidebar from '../../Components/Sidebar'
 import axios from 'axios'
+import { Store } from '../../Store'
 
 const EmplyeeList = () => {
   const [name,setName] = useState('')
@@ -15,6 +16,9 @@ const EmplyeeList = () => {
 
   const handleClose = () => setShow(false);
 
+  const {state} = useContext(Store)
+  const {userInformation} = state
+
 
   const handleSubmit = (e)=>{
     e.preventDefault()
@@ -24,6 +28,7 @@ const EmplyeeList = () => {
       office,
       designation,
       dayoff,
+      user: userInformation
     })
     .then(()=>{
       setName('')
@@ -33,14 +38,17 @@ const EmplyeeList = () => {
     })
   }
 
+
   useEffect(()=>{
     async function fetchData() {
-      const {data} = await axios.get('/emplyee')
+      const {data} = await axios.get(`/emplyee/user/${userInformation._id}`)
       setItems(data)
       
     }
     fetchData()
   },[items])
+
+ 
 
 
   const handleDelete = (id)=>{
@@ -51,7 +59,6 @@ const EmplyeeList = () => {
 
   const handleEdit = async(id)=>{
     const {data} = await axios.get(`http://localhost:8000/emplyee/${id}`)
-    console.log(id)
     
     setUserID(data._id)
     setName(data.name)

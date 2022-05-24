@@ -13,6 +13,10 @@ const TodaySchema = new Schema({
     room:{
         type: String,
         required: true
+    },
+    user:{
+        type: Schema.Types.ObjectId,
+        ref:'Auth'   
     }
 })
 

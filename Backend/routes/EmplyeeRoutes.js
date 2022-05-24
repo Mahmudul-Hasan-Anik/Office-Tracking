@@ -6,13 +6,12 @@ const { Schema } = require('mongoose')
 const EmplyeeRouter = express.Router()
 
 EmplyeeRouter.post('/emplyee', async(req, res) => {
-
     const newEmplyeeList = await new Emplyee({
       name: req.body.name,
       office: req.body.office,
       designation: req.body.designation,
       dayoff: req.body.dayoff,
-      // users: req.user._id
+      user: req.body.user._id
     })
   
     const emplyee = await newEmplyeeList.save().then(()=>{
@@ -24,12 +23,18 @@ EmplyeeRouter.post('/emplyee', async(req, res) => {
   
   })
 
-EmplyeeRouter.get('/emplyee', (req,res)=>{
-    Emplyee.deleteMany()
-    Emplyee.find({}, (err, docs)=>{
-        res.send(docs)
-    })
+// indivisul user -> Data show
+EmplyeeRouter.get('/emplyee/user/:id', async(req,res)=>{
+  Emplyee.find({user: req.params.id}, (err,docs)=>{
+    if(docs){
+      res.send(docs)
+    }else{
+      res.status(400).json(err)
+    }
+  })
 })
+
+// Route End
 
 EmplyeeRouter.get('/emplyee/:id', (req,res)=>{
   Emplyee.findById({_id: req.params.id}, (err,docs)=>{

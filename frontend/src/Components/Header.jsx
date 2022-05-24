@@ -1,16 +1,18 @@
 import React from 'react'
 import { useContext } from 'react'
 import { Navbar,Container,Nav } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Store } from '../Store'
 import {Dropdown} from 'react-bootstrap'
 
 const Header = () => {
+  const navigate = useNavigate()
   const {state, dispatch} = useContext(Store)
 
   const handleLogout = async()=>{
     await dispatch({type:'USER_LOGOUT'})
     localStorage.removeItem('userInformation')
+    navigate('/login')
   }
 
 

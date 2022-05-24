@@ -7,7 +7,8 @@ TodayRouter.post('/today', async(req,res)=>{
     const newToday = new Today({
         batch: req.body.batch,
         time: req.body.time,
-        room: req.body.room
+        room: req.body.room,
+        user: req.body.user._id
     })
 
     const today = await newToday.save().then(()=>{
@@ -17,13 +18,18 @@ TodayRouter.post('/today', async(req,res)=>{
     })
 })
 
-TodayRouter.get('/today', (req,res)=>{
-    Today.deleteMany()
-
-    Today.find({}, (err,docs)=>{
-        res.send(docs)
+// INDIVISUL USER DATA SHOW START HERE
+TodayRouter.get('/today/user/:id', (req,res)=>{
+    Today.find({user: req.params.id}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json(err)
+        }
     })
 })
+
+//INDIVISUL USER DATA SHOW END HERE
 
 TodayRouter.get('/today/:id', (req,res)=>{
     Today.findById({_id: req.params.id}, (err,docs)=>{

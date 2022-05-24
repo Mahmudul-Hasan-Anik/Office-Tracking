@@ -7,7 +7,8 @@ PostRouter.post('/post', async(req,res)=>{
     const newPost = new Post({
         name: req.body.name,
         hour: req.body.hour,
-        activity: req.body.activity
+        activity: req.body.activity,
+        user: req.body.user._id
     })
 
     const myPost = await newPost.save().then(()=>{
@@ -24,6 +25,20 @@ PostRouter.get('/post', (req,res)=>{
         res.send(docs)
     })
 })
+
+// INDIVISUL USER DATA SHOW HERE
+PostRouter.get('/post/user/:id', (req,res)=>{
+    Post.find({user: req.params.id}, (err,docs)=>{
+        if(docs){
+            res.send(docs)
+        }else{
+            res.status(400).json(err)
+        }
+    })
+})
+
+//INDIVISUL USER DATA SHOW END HERE
+
 
 PostRouter.get('/post/:id', (req,res)=>{
     Post.findById({_id: req.params.id}, (err,docs)=>{

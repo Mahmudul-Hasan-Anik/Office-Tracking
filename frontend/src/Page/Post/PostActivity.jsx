@@ -1,12 +1,16 @@
-import { useState } from 'react'
+import { useState,useContext } from 'react'
 import {Row,Col,Form,Button} from 'react-bootstrap'
 import Sidebar from '../../Components/Sidebar'
 import axios from 'axios'
+import { Store } from '../../Store'
 
 const PostActivity = () => {
   const [name,setName] = useState('')
   const [hour, setHour] = useState('')
   const [activity,setActivity] = useState('')
+
+  const {state} = useContext(Store)
+  const {userInformation} = state
 
 
   const handleSubmit = (e)=>{
@@ -15,7 +19,8 @@ const PostActivity = () => {
     axios.post('http://localhost:8000/post', {
       name,
       hour,
-      activity
+      activity,
+      user: userInformation
     })
     .then(()=>{
       setName('')

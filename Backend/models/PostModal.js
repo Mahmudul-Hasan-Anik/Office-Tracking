@@ -13,6 +13,10 @@ const PostSchema = new Schema({
     activity:{
         type: String,
         required: true
+    },
+    user:{
+        type: Schema.Types.ObjectId,
+        ref:'Auth'   
     }
 })
 

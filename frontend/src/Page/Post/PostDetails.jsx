@@ -1,7 +1,8 @@
-import { useState,useEffect } from 'react'
+import { useState,useEffect,useContext } from 'react'
 import {Row,Col,Modal,Button,Table,Container,Form} from 'react-bootstrap'
 import Sidebar from '../../Components/Sidebar'
 import axios from 'axios'
+import { Store } from '../../Store'
 
 const PostDetails = () => {
   const [items, setItems] = useState([])
@@ -13,10 +14,12 @@ const PostDetails = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
 
+  const {state} = useContext(Store)
+  const {userInformation} = state
 
   useEffect(()=>{
       async function fatchData(){
-          const {data} = await axios.get('/post')
+          const {data} = await axios.get(`/post/user/${userInformation._id}`)
           setItems(data)
       }
       fatchData()
